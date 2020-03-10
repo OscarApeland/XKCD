@@ -14,7 +14,7 @@ struct ComicFetcher {
     // MARK: External entries
 
     /// Fetch comics up until the most recently posted one, and backwards until the store contains at least 15 comics.
-    static func refreshComics() {
+    static func refreshComics(onCompletion: @escaping () -> Void) {
         
         var results = [ComicResultModel]()
         let dispatchGroup = DispatchGroup()
@@ -36,6 +36,7 @@ struct ComicFetcher {
         
         dispatchGroup.notify(queue: .main) {
             store(comics: results)
+            onCompletion()
         }
     }
     
@@ -122,7 +123,7 @@ struct ComicFetcher {
             return
         }
         
-        let nextPageNumbers = Array(max(0, leastRecentComicNumber() - 15) ... leastRecentComicNumber())
+        let nextPageNumbers = Array(max(0, leastRecentComicNumber() - 15) ..< leastRecentComicNumber())
         fetchComics(numbers: nextPageNumbers, onCompletion: onCompletion)
     }
     

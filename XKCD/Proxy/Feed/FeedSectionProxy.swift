@@ -76,6 +76,12 @@ class FeedSectionProxy: ContentProxy {
         return cell
     }
     
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        if indexPath.item == comics.count - 5 {
+            ComicFetcher.fetchMoreComics()
+        }
+    }
+    
     
     // MARK: Layout
     
@@ -98,13 +104,20 @@ class FeedSectionProxy: ContentProxy {
         
         let titleHeight = comic.title.boundingRect(with: CGSize(width: contentWidth, height: .greatestFiniteMagnitude),
                                                    options: [.usesFontLeading, .usesLineFragmentOrigin],
+                                                   attributes: [.font: UIFont.title],
                                                    context: nil).size.height
         
         let captionHeight = comic.caption.boundingRect(with: CGSize(width: contentWidth, height: .greatestFiniteMagnitude),
                                                        options: [.usesFontLeading, .usesLineFragmentOrigin],
+                                                       attributes: [.font: UIFont.caption],
                                                        context: nil).size.height
+        
+        let totalHeight = 0
+            + imageHeight + .itemSpacing
+            + titleHeight + .viewSpacing
+            + captionHeight + .viewSpacing
+            + UIFont.date.labelHeight
     
-        return CGSize(width: collectionView.bounds.width - .sidePadding * 2,
-                      height: imageHeight + .itemSpacing + titleHeight + .viewSpacing + captionHeight)
+        return CGSize(width: collectionView.bounds.width - .sidePadding * 2, height: totalHeight)
     }
 }

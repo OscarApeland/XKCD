@@ -25,6 +25,7 @@
 		08D80A582417E9C600AC896E /* FeedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08D80A572417E9C600AC896E /* FeedCell.swift */; };
 		08D80A5A2417E9DD00AC896E /* UICollectionView+dequeue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08D80A592417E9DD00AC896E /* UICollectionView+dequeue.swift */; };
 		08D80A5C2417EAFD00AC896E /* UICollectionView+RealmReloading.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08D80A5B2417EAFD00AC896E /* UICollectionView+RealmReloading.swift */; };
+		08D80A5E2417F53A00AC896E /* Fonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08D80A5D2417F53A00AC896E /* Fonts.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -46,6 +47,7 @@
 		08D80A572417E9C600AC896E /* FeedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCell.swift; sourceTree = "<group>"; };
 		08D80A592417E9DD00AC896E /* UICollectionView+dequeue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionView+dequeue.swift"; sourceTree = "<group>"; };
 		08D80A5B2417EAFD00AC896E /* UICollectionView+RealmReloading.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionView+RealmReloading.swift"; sourceTree = "<group>"; };
+		08D80A5D2417F53A00AC896E /* Fonts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fonts.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -150,6 +152,7 @@
 			isa = PBXGroup;
 			children = (
 				08D80A512417E6C600AC896E /* Spacing.swift */,
+				08D80A5D2417F53A00AC896E /* Fonts.swift */,
 			);
 			path = Constants;
 			sourceTree = "<group>";
@@ -251,6 +254,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				08D80A28241722B400AC896E /* MainViewController.swift in Sources */,
+				08D80A5E2417F53A00AC896E /* Fonts.swift in Sources */,
 				08D80A492417352F00AC896E /* ImageStorage.swift in Sources */,
 				08D80A562417E97600AC896E /* FeedSectionProxy.swift in Sources */,
 				08D80A24241722B400AC896E /* AppDelegate.swift in Sources */,

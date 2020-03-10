@@ -13,8 +13,8 @@ extension CGFloat {
     /// Horizontal whitespace around everything (26 or 30)
     static let sidePadding = UIDevice.current.userInterfaceIdiom == .pad ? CGFloat(30) : CGFloat(26)
 
-    /// Spacing between different types of content (32)
-    static let sectionSpacing = CGFloat(32)
+    /// Spacing between different types of content (40)
+    static let sectionSpacing = CGFloat(40)
     
     /// Spacing between items in a section (16)
     static let itemSpacing = CGFloat(16)

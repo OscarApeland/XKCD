@@ -13,7 +13,7 @@ extension UICollectionView {
 
     func register<CellClass: UICollectionReusableView>(_ cellClass: CellClass.Type) {
         let cellId = String(describing: type(of: cellClass.classForCoder()))
-        register(collectionViewCellClass, forCellWithReuseIdentifier: cellId)
+        register(cellClass, forCellWithReuseIdentifier: cellId)
     }
     
     func dequeue<CellClass: UICollectionReusableView>(_ cellClass: CellClass.Type, for indexPath: IndexPath) -> CellClass {
