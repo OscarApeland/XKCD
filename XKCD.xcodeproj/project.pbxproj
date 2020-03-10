@@ -17,6 +17,10 @@
 		08D80A442417275000AC896E /* Realm in Frameworks */ = {isa = PBXBuildFile; productRef = 08D80A432417275000AC896E /* Realm */; };
 		08D80A4624172BA700AC896E /* ComicFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08D80A4524172BA700AC896E /* ComicFetcher.swift */; };
 		08D80A492417352F00AC896E /* ImageStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08D80A482417352F00AC896E /* ImageStorage.swift */; };
+		08D80A4B2417E61500AC896E /* ContentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08D80A4A2417E61500AC896E /* ContentViewController.swift */; };
+		08D80A4D2417E66A00AC896E /* ContentFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08D80A4C2417E66A00AC896E /* ContentFlowLayout.swift */; };
+		08D80A4F2417E69000AC896E /* ContentSectionProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08D80A4E2417E69000AC896E /* ContentSectionProtocol.swift */; };
+		08D80A522417E6C600AC896E /* Spacing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08D80A512417E6C600AC896E /* Spacing.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +34,10 @@
 		08D80A3E241724D900AC896E /* XKCD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XKCD.swift; sourceTree = "<group>"; };
 		08D80A4524172BA700AC896E /* ComicFetcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComicFetcher.swift; sourceTree = "<group>"; };
 		08D80A482417352F00AC896E /* ImageStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageStorage.swift; sourceTree = "<group>"; };
+		08D80A4A2417E61500AC896E /* ContentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentViewController.swift; sourceTree = "<group>"; };
+		08D80A4C2417E66A00AC896E /* ContentFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentFlowLayout.swift; sourceTree = "<group>"; };
+		08D80A4E2417E69000AC896E /* ContentSectionProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentSectionProtocol.swift; sourceTree = "<group>"; };
+		08D80A512417E6C600AC896E /* Spacing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Spacing.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -64,6 +72,7 @@
 		08D80A22241722B400AC896E /* XKCD */ = {
 			isa = PBXGroup;
 			children = (
+				08D80A502417E6BF00AC896E /* Constants */,
 				08D80A3B2417249200AC896E /* Handlers */,
 				08D80A382417247C00AC896E /* Models */,
 				08D80A372417247100AC896E /* Proxy */,
@@ -77,6 +86,7 @@
 		08D80A372417247100AC896E /* Proxy */ = {
 			isa = PBXGroup;
 			children = (
+				08D80A532417E7E200AC896E /* Base */,
 			);
 			path = Proxy;
 			sourceTree = "<group>";
@@ -123,6 +133,24 @@
 			children = (
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		08D80A502417E6BF00AC896E /* Constants */ = {
+			isa = PBXGroup;
+			children = (
+				08D80A512417E6C600AC896E /* Spacing.swift */,
+			);
+			path = Constants;
+			sourceTree = "<group>";
+		};
+		08D80A532417E7E200AC896E /* Base */ = {
+			isa = PBXGroup;
+			children = (
+				08D80A4A2417E61500AC896E /* ContentViewController.swift */,
+				08D80A4C2417E66A00AC896E /* ContentFlowLayout.swift */,
+				08D80A4E2417E69000AC896E /* ContentSectionProtocol.swift */,
+			);
+			path = Base;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -205,8 +233,12 @@
 				08D80A28241722B400AC896E /* MainViewController.swift in Sources */,
 				08D80A492417352F00AC896E /* ImageStorage.swift in Sources */,
 				08D80A24241722B400AC896E /* AppDelegate.swift in Sources */,
+				08D80A4D2417E66A00AC896E /* ContentFlowLayout.swift in Sources */,
 				08D80A26241722B400AC896E /* SceneDelegate.swift in Sources */,
+				08D80A4B2417E61500AC896E /* ContentViewController.swift in Sources */,
 				08D80A4624172BA700AC896E /* ComicFetcher.swift in Sources */,
+				08D80A522417E6C600AC896E /* Spacing.swift in Sources */,
+				08D80A4F2417E69000AC896E /* ContentSectionProtocol.swift in Sources */,
 				08D80A3F241724D900AC896E /* XKCD.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -9,19 +9,21 @@
 import UIKit
 import RealmSwift
 
-class MainViewController: UIViewController {
+class MainViewController: ContentViewController {
 
-    var token: NotificationToken?
+    
+    // MARK: Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
         
-        token = try! Realm()
-            .objects(XKCD.self).sorted(byKeyPath: "number", ascending: false)
-            .observe { change in
-                print(change)
-            }
+        proxies = [
+        
+        ]
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         
         ComicFetcher.refreshComics()
     }
