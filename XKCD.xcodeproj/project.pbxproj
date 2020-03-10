@@ -21,6 +21,10 @@
 		08D80A4D2417E66A00AC896E /* ContentFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08D80A4C2417E66A00AC896E /* ContentFlowLayout.swift */; };
 		08D80A4F2417E69000AC896E /* ContentSectionProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08D80A4E2417E69000AC896E /* ContentSectionProtocol.swift */; };
 		08D80A522417E6C600AC896E /* Spacing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08D80A512417E6C600AC896E /* Spacing.swift */; };
+		08D80A562417E97600AC896E /* FeedSectionProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08D80A552417E97600AC896E /* FeedSectionProxy.swift */; };
+		08D80A582417E9C600AC896E /* FeedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08D80A572417E9C600AC896E /* FeedCell.swift */; };
+		08D80A5A2417E9DD00AC896E /* UICollectionView+dequeue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08D80A592417E9DD00AC896E /* UICollectionView+dequeue.swift */; };
+		08D80A5C2417EAFD00AC896E /* UICollectionView+RealmReloading.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08D80A5B2417EAFD00AC896E /* UICollectionView+RealmReloading.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,6 +42,10 @@
 		08D80A4C2417E66A00AC896E /* ContentFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentFlowLayout.swift; sourceTree = "<group>"; };
 		08D80A4E2417E69000AC896E /* ContentSectionProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentSectionProtocol.swift; sourceTree = "<group>"; };
 		08D80A512417E6C600AC896E /* Spacing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Spacing.swift; sourceTree = "<group>"; };
+		08D80A552417E97600AC896E /* FeedSectionProxy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedSectionProxy.swift; sourceTree = "<group>"; };
+		08D80A572417E9C600AC896E /* FeedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCell.swift; sourceTree = "<group>"; };
+		08D80A592417E9DD00AC896E /* UICollectionView+dequeue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionView+dequeue.swift"; sourceTree = "<group>"; };
+		08D80A5B2417EAFD00AC896E /* UICollectionView+RealmReloading.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionView+RealmReloading.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -87,6 +95,7 @@
 			isa = PBXGroup;
 			children = (
 				08D80A532417E7E200AC896E /* Base */,
+				08D80A542417E96100AC896E /* Feed */,
 			);
 			path = Proxy;
 			sourceTree = "<group>";
@@ -131,6 +140,8 @@
 		08D80A4724172BD800AC896E /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				08D80A592417E9DD00AC896E /* UICollectionView+dequeue.swift */,
+				08D80A5B2417EAFD00AC896E /* UICollectionView+RealmReloading.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -151,6 +162,15 @@
 				08D80A4E2417E69000AC896E /* ContentSectionProtocol.swift */,
 			);
 			path = Base;
+			sourceTree = "<group>";
+		};
+		08D80A542417E96100AC896E /* Feed */ = {
+			isa = PBXGroup;
+			children = (
+				08D80A552417E97600AC896E /* FeedSectionProxy.swift */,
+				08D80A572417E9C600AC896E /* FeedCell.swift */,
+			);
+			path = Feed;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -232,12 +252,16 @@
 			files = (
 				08D80A28241722B400AC896E /* MainViewController.swift in Sources */,
 				08D80A492417352F00AC896E /* ImageStorage.swift in Sources */,
+				08D80A562417E97600AC896E /* FeedSectionProxy.swift in Sources */,
 				08D80A24241722B400AC896E /* AppDelegate.swift in Sources */,
 				08D80A4D2417E66A00AC896E /* ContentFlowLayout.swift in Sources */,
+				08D80A582417E9C600AC896E /* FeedCell.swift in Sources */,
+				08D80A5C2417EAFD00AC896E /* UICollectionView+RealmReloading.swift in Sources */,
 				08D80A26241722B400AC896E /* SceneDelegate.swift in Sources */,
 				08D80A4B2417E61500AC896E /* ContentViewController.swift in Sources */,
 				08D80A4624172BA700AC896E /* ComicFetcher.swift in Sources */,
 				08D80A522417E6C600AC896E /* Spacing.swift in Sources */,
+				08D80A5A2417E9DD00AC896E /* UICollectionView+dequeue.swift in Sources */,
 				08D80A4F2417E69000AC896E /* ContentSectionProtocol.swift in Sources */,
 				08D80A3F241724D900AC896E /* XKCD.swift in Sources */,
 			);
