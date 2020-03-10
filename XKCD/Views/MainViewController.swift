@@ -45,7 +45,7 @@ class MainViewController: ContentViewController {
         navigationItem.searchController = searchController
         navigationItem.hidesSearchBarWhenScrolling = false
         
-        searchController.searchBar.placeholder = "Find a relevant XKCD"
+        searchController.searchBar.placeholder = "Find XKCD"
         searchController.delegate = self
         searchController.searchResultsUpdater = self
         searchController.searchBar.searchBarStyle = .minimal

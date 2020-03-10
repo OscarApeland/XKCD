@@ -16,16 +16,11 @@ extension UICollectionView {
             IndexPath(item: $0, section: section)
         }
         
-        let (insertions, deletions, modifications) = (
-             changes.insertions.map(indexPath),
-             changes.deletions.map(indexPath),
-             changes.modifications.map(indexPath)
-        )
+        // Discard modification reloading because they are not relevant in this app
         
         performBatchUpdates({
-            insertItems(at: insertions)
-            deleteItems(at: deletions)
-            reloadItems(at: modifications)
+            insertItems(at: changes.insertions.map(indexPath))
+            deleteItems(at: changes.deletions.map(indexPath))
         })
     }
 }

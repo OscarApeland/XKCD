@@ -8,6 +8,7 @@
 
 import UIKit
 import RealmSwift
+import SafariServices
 
 class FeedSectionProxy: ContentProxy {
 
@@ -19,7 +20,7 @@ class FeedSectionProxy: ContentProxy {
     // MARK: Proxy
     
     weak var collectionView: UICollectionView?
-    weak var presentingViewController: ContentViewController?
+    weak var parent: ContentViewController?
     var contentSectionIndex = 0
     
     
@@ -51,7 +52,7 @@ class FeedSectionProxy: ContentProxy {
     
     func didMove(to section: Int, in collectionView: UICollectionView, with parent: ContentViewController) {
         self.collectionView = collectionView
-        self.presentingViewController = parent
+        self.parent = parent
         self.contentSectionIndex = section
         
         collectionView.register(FeedCell.self)
@@ -86,26 +87,37 @@ class FeedSectionProxy: ContentProxy {
     // MARK: Context menu
     
     func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
-        let isSaved = comics[indexPath.item].isSaved
+        let comic = comics[indexPath.item]
+
         let save = UIAction(
-            title: isSaved ? NSLocalizedString("Unsave", comment: "") : NSLocalizedString("Save", comment: ""),
-            image: isSaved ? UIImage(systemName: "heart.slash") : UIImage(systemName: "heart"))
+            title: comic.isSaved ? NSLocalizedString("Unsave", comment: "") : NSLocalizedString("Save", comment: ""),
+            image: comic.isSaved ? UIImage(systemName: "heart.slash") : UIImage(systemName: "heart"))
         { _ in
-            
+            try! Realm().write {
+                comic.isSaved = !comic.isSaved
+            }
         }
         
         let explain = UIAction(
             title: NSLocalizedString("Explain", comment: ""),
             image: UIImage(systemName: "questionmark.circle"))
         { _ in
-            
+            let explanationUrl = URL(string: "https://www.explainxkcd.com/wiki/index.php/\(comic.number)")!
+            let viewController = SFSafariViewController(url: explanationUrl)
+            self.parent?.present(viewController, animated: true)
         }
         
         let share = UIAction(
             title: NSLocalizedString("Share", comment: ""),
             image: UIImage(systemName: "square.and.arrow.up"))
         { _ in
+            let activityViewController = UIActivityViewController(
+                activityItems: [ImageStorage.getImage(forComic: comic.number), URL(string: "https://xkcd.com/\(comic.number)")!],
+                applicationActivities: nil
+            )
             
+            activityViewController.popoverPresentationController?.sourceRect = CGRect(origin: point, size: .zero)
+            self.parent?.present(activityViewController, animated: true)
         }
         
         return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
