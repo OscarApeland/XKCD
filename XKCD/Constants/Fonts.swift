@@ -22,4 +22,3 @@ extension UIFont {
         return lineHeight.rounded(.up)
     }
 }
-

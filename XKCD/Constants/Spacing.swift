@@ -11,7 +11,7 @@ import UIKit
 extension CGFloat {
  
     /// Horizontal whitespace around everything (26 or 30)
-    static let sidePadding = UIDevice.current.userInterfaceIdiom == .pad ? CGFloat(30) : CGFloat(26)
+    static let sidePadding = UIDevice.current.userInterfaceIdiom == .pad ? CGFloat(20) : CGFloat(16)
 
     /// Spacing between different types of content (40)
     static let sectionSpacing = CGFloat(40)

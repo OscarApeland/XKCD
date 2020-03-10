@@ -22,14 +22,12 @@ class FeedCell: UICollectionViewCell {
             titleLabel.text = comic.title
             captionLabel.text = comic.caption
             dateLabel.text = RelativeDateTimeFormatter().localizedString(for: comic.date, relativeTo: Date())
-            
-            saveButton.isSelected = comic.isSaved
         }
     }
     
     
     // MARK: Outlets
-    
+        
     let imageView = UIImageView()
     
     let titleLabel = UILabel()
@@ -37,12 +35,7 @@ class FeedCell: UICollectionViewCell {
     let captionLabel = UILabel()
     
     let dateLabel = UILabel()
-    
-    let saveButton = UIButton()
-    
-    let explainButton = UIButton()
-    
-    let shareButton = UIButton()
+
     
     lazy var imageHeightConstraint = imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor, constant: 1.0)
     
@@ -53,7 +46,7 @@ class FeedCell: UICollectionViewCell {
         super.init(frame: frame)
         
         imageView.contentMode = .scaleAspectFit
-        
+
         titleLabel.numberOfLines = 0
         titleLabel.font = .title
         titleLabel.textColor = .label
@@ -77,15 +70,15 @@ class FeedCell: UICollectionViewCell {
             imageHeightConstraint,
             
             titleLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: .itemSpacing),
-            titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 5.0),
             titleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             
             captionLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: .viewSpacing),
-            captionLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            captionLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 5.0),
             captionLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             
             dateLabel.topAnchor.constraint(equalTo: captionLabel.bottomAnchor, constant: .viewSpacing),
-            dateLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            dateLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 5.0),
             dateLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
         ])
     }

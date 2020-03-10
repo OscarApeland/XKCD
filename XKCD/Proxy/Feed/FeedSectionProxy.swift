@@ -83,6 +83,37 @@ class FeedSectionProxy: ContentProxy {
     }
     
     
+    // MARK: Context menu
+    
+    func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+        let isSaved = comics[indexPath.item].isSaved
+        let save = UIAction(
+            title: isSaved ? NSLocalizedString("Unsave", comment: "") : NSLocalizedString("Save", comment: ""),
+            image: isSaved ? UIImage(systemName: "heart.slash") : UIImage(systemName: "heart"))
+        { _ in
+            
+        }
+        
+        let explain = UIAction(
+            title: NSLocalizedString("Explain", comment: ""),
+            image: UIImage(systemName: "questionmark.circle"))
+        { _ in
+            
+        }
+        
+        let share = UIAction(
+            title: NSLocalizedString("Share", comment: ""),
+            image: UIImage(systemName: "square.and.arrow.up"))
+        { _ in
+            
+        }
+        
+        return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
+            UIMenu(title: "", children: [save, explain, share])
+        }
+    }
+    
+    
     // MARK: Layout
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
@@ -102,12 +133,12 @@ class FeedSectionProxy: ContentProxy {
         
         let imageHeight = contentWidth * CGFloat(comic.imageHeight / comic.imageWidth)
         
-        let titleHeight = comic.title.boundingRect(with: CGSize(width: contentWidth, height: .greatestFiniteMagnitude),
+        let titleHeight = comic.title.boundingRect(with: CGSize(width: contentWidth - 5.0, height: .greatestFiniteMagnitude),
                                                    options: [.usesFontLeading, .usesLineFragmentOrigin],
                                                    attributes: [.font: UIFont.title],
                                                    context: nil).size.height
         
-        let captionHeight = comic.caption.boundingRect(with: CGSize(width: contentWidth, height: .greatestFiniteMagnitude),
+        let captionHeight = comic.caption.boundingRect(with: CGSize(width: contentWidth - 5.0, height: .greatestFiniteMagnitude),
                                                        options: [.usesFontLeading, .usesLineFragmentOrigin],
                                                        attributes: [.font: UIFont.caption],
                                                        context: nil).size.height

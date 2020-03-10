@@ -113,6 +113,10 @@ extension ContentViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
         proxy(at: indexPath.section)?.collectionView?(collectionView, didDeselectItemAt: indexPath)
     }
+    
+    func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+        proxy(at: indexPath.section)?.collectionView?(collectionView, contextMenuConfigurationForItemAt: indexPath, point: point)
+    }
 }
 
 extension ContentViewController: UICollectionViewDelegateFlowLayout {
