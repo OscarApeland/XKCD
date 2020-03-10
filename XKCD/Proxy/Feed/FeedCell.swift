@@ -40,12 +40,17 @@ class FeedCell: UICollectionViewCell {
     lazy var imageHeightConstraint = imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor, constant: 1.0)
     
     
+    lazy var zoomGesture = UIPinchGestureRecognizer(target: self, action: #selector(pinched))
+    
+    
     // MARK: Inits
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         
         imageView.contentMode = .scaleAspectFit
+        imageView.isUserInteractionEnabled = true
+        imageView.addGestureRecognizer(zoomGesture)
 
         titleLabel.numberOfLines = 0
         titleLabel.font = .title
@@ -85,5 +90,76 @@ class FeedCell: UICollectionViewCell {
     
     required init?(coder _: NSCoder) {
         return nil
+    }
+    
+    
+    // MARK: Zoom
+    
+    weak var zoomImageView: UIImageView?
+    weak var zoomBackgroundView: UIView?
+    private var zoomSourcePoint: CGPoint?
+    private var zoomSourceFrame: CGRect?
+    
+    @objc private func pinched(with gesture: UIPinchGestureRecognizer) {
+        switch gesture.state {
+        case .began:
+            UIImpactFeedbackGenerator().impactOccurred(intensity: 0.2)
+            
+            zoomSourceFrame = convert(imageView.frame, to: window)
+            zoomSourcePoint = gesture.location(in: window)
+            
+            window?.addSubview({
+                $0.frame = window!.bounds
+                $0.backgroundColor = UIColor.black.withAlphaComponent(0.7)
+                $0.alpha = 0.0
+
+                zoomBackgroundView = $0
+                return $0
+            }(UIView()))
+            
+            window?.addSubview({
+                $0.frame = zoomSourceFrame!
+                $0.image = imageView.image
+                $0.contentMode = .scaleAspectFill
+                $0.clipsToBounds = true
+                $0.layer.cornerRadius = layer.cornerRadius
+                
+                zoomImageView = $0
+                return $0
+            }(UIImageView()))
+            
+            imageView.isHidden = true
+            
+        case .changed:
+            let scale = max(1, gesture.scale)
+
+            zoomBackgroundView?.alpha = scale - 1
+            zoomImageView?.frame.size = CGSize(width: zoomSourceFrame!.width * scale,
+                                               height: zoomSourceFrame!.height * scale)
+            zoomImageView?.center = CGPoint(x: zoomSourceFrame!.midX - (zoomSourcePoint!.x - gesture.location(in: window).x),
+                                            y: zoomSourceFrame!.midY - (zoomSourcePoint!.y - gesture.location(in: window).y))
+            
+            if let imageView = zoomImageView, imageView.layer.cornerRadius > 0 {
+                imageView.layer.cornerRadius = zoomSourceFrame!.height * scale / 2
+            }
+            
+        case .ended, .failed, .cancelled:
+            UIView.animate(withDuration: 0.2, animations: {
+                self.zoomImageView?.frame = self.zoomSourceFrame!
+                self.zoomBackgroundView?.alpha = 0.0
+                if let imageView = self.zoomImageView, imageView.layer.cornerRadius > 0 {
+                    imageView.layer.cornerRadius = self.zoomSourceFrame!.height / 2
+                }
+            }) { _ in
+                self.imageView.isHidden = false
+                self.zoomImageView?.removeFromSuperview()
+                self.zoomBackgroundView?.removeFromSuperview()
+                
+                UIImpactFeedbackGenerator().impactOccurred(intensity: 0.2)
+            }
+            
+        default:
+            break
+        }
     }
 }

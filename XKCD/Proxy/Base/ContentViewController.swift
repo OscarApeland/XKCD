@@ -35,7 +35,7 @@ class ContentViewController: UIViewController {
         
         view.backgroundColor = .systemBackground
         
-        collectionView.contentInset = .init(top: .sidePadding, left: .zero, bottom: .zero, right: .zero)
+        collectionView.contentInset = .init(top: .sectionSpacing, left: .zero, bottom: .sectionSpacing, right: .zero)
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.backgroundColor = .clear
