@@ -11,50 +11,6 @@ import RealmSwift
 
 struct ComicFetcher {
     
-    // MARK: Nested models
-    
-    /// Model that matches the one returned from the XKCD API
-    private class ComicResultModel: Codable {
-        let num: Int
-        let title: String
-        let alt: String
-        let img: String
-        
-        let year: String
-        let month: String
-        let day: String
-        
-        var size = CGSize.zero
-        
-        enum CodingKeys: String, CodingKey {
-            case num, title, alt, img, year, month, day
-        }
-    }
-    
-    private enum ComicAPIError: String, Error {
-        case notFound, networkIssue, imageMissing
-    }
-    
-    
-    // MARK: Internal convenience
-    
-    private static func mostRecentComicNumber() -> Int {
-        try! Realm()
-            .objects(XKCD.self)
-            .sorted(byKeyPath: "number", ascending: false)
-            .first?.number
-            ?? 2278
-    }
-    
-    private static func leastRecentComicNumber() -> Int {
-        try! Realm()
-            .objects(XKCD.self)
-            .sorted(byKeyPath: "number", ascending: true)
-            .first?.number
-            ?? 2278
-    }
-    
-    
     // MARK: External entries
 
     /// Fetch comics up until the most recently posted one, and backwards until the store contains at least 15 comics.
@@ -91,8 +47,34 @@ struct ComicFetcher {
     }
     
     
+    // MARK: Nested models
+    
+    /// Model that matches the one returned from the XKCD API
+    private class ComicResultModel: Codable {
+        let num: Int
+        let title: String
+        let alt: String
+        let img: String
+        
+        let year: String
+        let month: String
+        let day: String
+        
+        var size = CGSize.zero
+        
+        enum CodingKeys: String, CodingKey {
+            case num, title, alt, img, year, month, day
+        }
+    }
+    
+    private enum ComicAPIError: String, Error {
+        case notFound, networkIssue, imageMissing
+    }
+    
+    
     // MARK: Storage
     
+    /// Converts the temporary API model into a Realm object and adds it to the database.
     private static func store(comics: [ComicResultModel]) {
         let realm = try! Realm()
         try! realm.write {
@@ -119,6 +101,7 @@ struct ComicFetcher {
     
     // MARK: Fetching logic
 
+    /// Recurses upwards from the latest comic until no more recent comics can be found, then returns all the comics after the initial number.
     private static func fetchUpToNewest(from number: Int = mostRecentComicNumber() + 1, comics: [ComicResultModel] = [], onCompletion: @escaping ([ComicResultModel]) -> Void) {
         fetchComic(number: number) { result in
             switch result {
@@ -132,16 +115,24 @@ struct ComicFetcher {
         }
     }
     
+    /// Fetches 15 comics older than the oldest comic
     private static func fetchNextPage(onCompletion: @escaping ([ComicResultModel]) -> Void) {
         guard leastRecentComicNumber() > 0 else {
+            onCompletion([])
             return
         }
         
+        let nextPageNumbers = Array(max(0, leastRecentComicNumber() - 15) ... leastRecentComicNumber())
+        fetchComics(numbers: nextPageNumbers, onCompletion: onCompletion)
+    }
+    
+    /// Fetches all the comics in the numbers array
+    private static func fetchComics(numbers: [Int], onCompletion: @escaping ([ComicResultModel]) -> Void) {
         var results: [ComicResultModel] = []
         
         let dispatchGroup = DispatchGroup()
         
-        (max(0, leastRecentComicNumber() - 15) ... leastRecentComicNumber()).forEach { number in
+        numbers.forEach { number in
             dispatchGroup.enter()
             
             fetchComic(number: number) { result in
@@ -165,6 +156,8 @@ struct ComicFetcher {
     
     // MARK: API Calls
     
+    /// Fetch a single comic from the XKCD API
+    /// Also fetches the image and stores it to disk, so presentation is easier
     private static func fetchComic(number: Int, onCompletion: @escaping (Result<ComicResultModel, ComicAPIError>) -> Void) {
         let url = URL(string: "https://xkcd.com/\(number)/info.0.json")!
         URLSession.shared.dataTask(with: url) { (data, _, error) in
@@ -196,6 +189,7 @@ struct ComicFetcher {
         }.resume()
     }
     
+    /// Grabs the image, stores it to disk, and returns its dimensions
     private static func fetchImage(at imageUrl: URL, forComic number: Int, onCompletion: @escaping (Result<CGSize, ComicAPIError>) -> Void) {
         URLSession.shared.dataTask(with: imageUrl) { (data, _, error) in
             guard let data = data, let image = UIImage(data: data) else {
@@ -207,4 +201,24 @@ struct ComicFetcher {
             onCompletion(.success(image.size))
         }.resume()
     }
+    
+    
+    // MARK: Internal convenience
+    
+    private static func mostRecentComicNumber() -> Int {
+        try! Realm()
+            .objects(XKCD.self)
+            .sorted(byKeyPath: "number", ascending: false)
+            .first?.number
+            ?? 2278
+    }
+    
+    private static func leastRecentComicNumber() -> Int {
+        try! Realm()
+            .objects(XKCD.self)
+            .sorted(byKeyPath: "number", ascending: true)
+            .first?.number
+            ?? 2278
+    }
+    
 }
