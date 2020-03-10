@@ -14,15 +14,22 @@ class XKCD: Object {
     
     // Realm doesn't provide normal inits, so empty placeholders guaranteed to be overwritten is easiest.
     // Realm also requires all properties to be @objc dynamic
+
     
     dynamic var number = 0
+    
     dynamic var title = ""
     dynamic var caption = ""
-    dynamic var imageUrl = ""
+        
+    dynamic var date = Date()
     
-    dynamic var year = 0
-    dynamic var month = 0
-    dynamic var day = 0
+    dynamic var imageHeight = 0.0
+    dynamic var imageWidth = 0.0
     
+    /// Flag indicating if the user has saved this comic
     dynamic var isSaved = false
+    
+    override class func primaryKey() -> String? {
+        return "number"
+    }
 }

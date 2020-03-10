@@ -7,14 +7,23 @@
 //
 
 import UIKit
+import RealmSwift
 
 class MainViewController: UIViewController {
 
+    var token: NotificationToken?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        
+        token = try! Realm()
+            .objects(XKCD.self).sorted(byKeyPath: "number", ascending: false)
+            .observe { change in
+                print(change)
+            }
+        
+        ComicFetcher.refreshComics()
     }
-
-
 }
 
