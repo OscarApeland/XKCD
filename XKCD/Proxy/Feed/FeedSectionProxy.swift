@@ -82,7 +82,7 @@ class FeedSectionProxy: ContentProxy {
             ComicFetcher.fetchMoreComics()
         }
     }
-    
+
     
     // MARK: Context menu
     
@@ -104,6 +104,8 @@ class FeedSectionProxy: ContentProxy {
         { _ in
             let explanationUrl = URL(string: "https://www.explainxkcd.com/wiki/index.php/\(comic.number)")!
             let viewController = SFSafariViewController(url: explanationUrl)
+            viewController.preferredControlTintColor = .label
+            
             self.parent?.present(viewController, animated: true)
         }
         
@@ -112,11 +114,11 @@ class FeedSectionProxy: ContentProxy {
             image: UIImage(systemName: "square.and.arrow.up"))
         { _ in
             let activityViewController = UIActivityViewController(
-                activityItems: [ImageStorage.getImage(forComic: comic.number), URL(string: "https://xkcd.com/\(comic.number)")!],
+                activityItems: [URL(string: "https://xkcd.com/\(comic.number)")!],
                 applicationActivities: nil
             )
             
-            activityViewController.popoverPresentationController?.sourceRect = CGRect(origin: point, size: .zero)
+            activityViewController.popoverPresentationController?.sourceView = collectionView.cellForItem(at: indexPath)
             self.parent?.present(activityViewController, animated: true)
         }
         
@@ -133,16 +135,17 @@ class FeedSectionProxy: ContentProxy {
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets(top: 0.0, left: .sidePadding, bottom: .sectionSpacing, right: .sidePadding)
+        let margin = collectionView.bounds.width < 500
+            ? .sidePadding
+            : (collectionView.bounds.width - 500) / 2
+
+        return UIEdgeInsets(top: 0.0, left: margin, bottom: .sectionSpacing, right: margin)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let comic = comics[indexPath.item]
         
-        let contentWidth = (collectionViewLayout as! ContentFlowLayout).isWide
-            ? (collectionView.bounds.width - .sidePadding * 2) / 2
-            : collectionView.bounds.width - .sidePadding * 2
-        
+        let contentWidth = min(500.0, collectionView.bounds.width - .sidePadding * 2)
         let imageHeight = contentWidth * CGFloat(comic.imageHeight / comic.imageWidth)
         
         let titleHeight = comic.title.boundingRect(with: CGSize(width: contentWidth - 5.0, height: .greatestFiniteMagnitude),
@@ -161,6 +164,6 @@ class FeedSectionProxy: ContentProxy {
             + captionHeight + .viewSpacing
             + UIFont.date.labelHeight
     
-        return CGSize(width: collectionView.bounds.width - .sidePadding * 2, height: totalHeight)
+        return CGSize(width: contentWidth, height: totalHeight)
     }
 }
