@@ -14,9 +14,13 @@ class XKCD: Object {
     
     // Realm doesn't provide normal inits, so empty placeholders guaranteed to be overwritten is easiest.
     // Realm also requires all properties to be @objc dynamic
-
+    dynamic var id = ""
     
-    dynamic var number = 0
+    dynamic var number = 0 {
+        didSet {
+            id = String(number)
+        }
+    }
     
     dynamic var title = ""
     dynamic var caption = ""
@@ -30,6 +34,24 @@ class XKCD: Object {
     dynamic var isSaved = false
     
     override class func primaryKey() -> String? {
-        return "number"
+        return "id"
+    }
+    
+    
+    // MARK: Convenience
+    
+    func setProperties(from comic: ComicFetcher.ComicResultModel) {
+        number = comic.num
+        title = comic.title
+        caption = comic.alt
+        imageWidth = Double(comic.size.width)
+        imageHeight = Double(comic.size.height)
+        date = {
+            var components = DateComponents()
+            components.setValue(Int(comic.year), for: .year)
+            components.setValue(Int(comic.month), for: .month)
+            components.setValue(Int(comic.day), for: .day)
+            return Calendar.current.date(from: components)!
+        }()
     }
 }

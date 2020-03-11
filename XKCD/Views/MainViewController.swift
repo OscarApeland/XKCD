@@ -33,7 +33,7 @@ class MainViewController: ContentViewController {
     
     // MARK: State
     
-    var isShowingSaved = false
+    var isSavedSelected = false
     
     
     // MARK: Accessories
@@ -71,7 +71,7 @@ class MainViewController: ContentViewController {
         super.viewDidAppear(animated)
         
         refreshControl.beginRefreshing()
-        ComicFetcher.refreshComics {
+        ComicFetcher.getLatestComics {
             self.refreshControl.endRefreshing()
         }
     }
@@ -80,7 +80,7 @@ class MainViewController: ContentViewController {
     // MARK: Actions
     
     @objc private func refreshed() {
-        ComicFetcher.refreshComics {
+        ComicFetcher.getLatestComics {
             self.refreshControl.endRefreshing()
         }
     }
@@ -88,11 +88,11 @@ class MainViewController: ContentViewController {
     @objc private func savedButtonPressed(_ sender: UIBarButtonItem) {
         UISelectionFeedbackGenerator().selectionChanged()
         
-        isShowingSaved = !isShowingSaved
-        sender.image = isShowingSaved ? UIImage(systemName: "heart.fill") : UIImage(systemName: "heart")
+        isSavedSelected = !isSavedSelected
+        sender.image = isSavedSelected ? UIImage(systemName: "heart.fill") : UIImage(systemName: "heart")
         
         proxies = [
-            FeedSectionProxy(feedType: isShowingSaved ? .saved : .all)
+            FeedSectionProxy(feedType: isSavedSelected ? .saved : .all)
         ]
         collectionView.reloadSections(IndexSet(integer: 0))
     }
@@ -101,15 +101,40 @@ class MainViewController: ContentViewController {
 extension MainViewController: UISearchResultsUpdating, UISearchControllerDelegate {
     
     func updateSearchResults(for searchController: UISearchController) {
+        print("update")
         
+        if searchController.searchBar.text!.isEmpty {
+            if case .search = (proxies.first as? FeedSectionProxy)?.feedType {
+                proxies = [
+                    FeedSectionProxy(feedType: isSavedSelected ? .saved : .all)
+                ]
+                collectionView.reloadSections(IndexSet(integer: 0))
+            }
+            
+            return
+        }
+        
+        let currentQuery = searchController.searchBar.text!
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            guard currentQuery == searchController.searchBar.text else {
+                print("Bounced", currentQuery)
+                return
+            }
+            
+            self.proxies = [
+                FeedSectionProxy(feedType: .search(searchController.searchBar.text!))
+            ]
+            
+            self.collectionView.reloadSections(IndexSet(integer: 0))
+        }
     }
     
-    func willPresentSearchController(_ searchController: UISearchController) {
-
-    }
-
     func willDismissSearchController(_ searchController: UISearchController) {
-
+        print("dismisss")
+        proxies = [
+            FeedSectionProxy(feedType: isSavedSelected ? .saved : .all)
+        ]
+        collectionView.reloadSections(IndexSet(integer: 0))
     }
 }
 

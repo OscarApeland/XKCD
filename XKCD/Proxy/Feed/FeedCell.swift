@@ -19,7 +19,7 @@ class FeedCell: UICollectionViewCell {
             imageHeightConstraint.isActive = true
             
             imageView.image = ImageStorage.getImage(forComic: comic.number)
-            titleLabel.text = comic.title
+            titleLabel.text = "#\(comic.number): \(comic.title)"
             captionLabel.text = comic.caption
             
             dateLabel.text = Date().timeIntervalSince(comic.date) > 60 * 60 * 24 * 7

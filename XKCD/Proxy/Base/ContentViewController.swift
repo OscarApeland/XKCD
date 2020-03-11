@@ -44,7 +44,7 @@ class ContentViewController: UIViewController {
     }
     
     
-    // MARK: Cell Resizing
+    // MARK: Adaptive Layout
     
     private lazy var currentBounds = view.bounds
     
@@ -62,7 +62,6 @@ class ContentViewController: UIViewController {
     
     // MARK: Convenience
     
-    /// Safely fetches the proxy at the requested index, if any. Helps avoid random UICollectionView state issues.
     func proxy(at index: Int) -> ContentProxy? {
         proxies.indices.contains(index) ? proxies[index] : nil
     }
@@ -71,19 +70,23 @@ class ContentViewController: UIViewController {
 extension ContentViewController: UICollectionViewDataSource {
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return proxies.count
+        proxies.count
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return proxy(at: section)?.collectionView(collectionView, numberOfItemsInSection: section) ?? 0
+        proxy(at: section)?.collectionView(collectionView, numberOfItemsInSection: section) ?? 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        return proxy(at: indexPath.section)!.collectionView(collectionView, cellForItemAt: indexPath)
+        proxy(at: indexPath.section)!.collectionView(collectionView, cellForItemAt: indexPath)
     }
 }
 
 extension ContentViewController: UICollectionViewDelegate {
+    
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        proxy(at: indexPath.section)?.collectionView?(collectionView, willDisplay: cell, forItemAt: indexPath)
+    }
     
     func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
         proxy(at: indexPath.section)?.collectionView?(collectionView, contextMenuConfigurationForItemAt: indexPath, point: point)

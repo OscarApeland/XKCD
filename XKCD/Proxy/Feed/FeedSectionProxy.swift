@@ -58,6 +58,19 @@ class FeedSectionProxy: ContentProxy {
     
     private var comics: Results<XKCD>?
     
+    private var searchResults = [Int]()
+    
+    private func xkcd(at index: Int) -> XKCD {
+        if case .search = feedType {
+            return comics!.sorted {
+                searchResults.firstIndex(of: $0.number)! > searchResults.firstIndex(of: $1.number)!
+            }[index]
+        } else {
+            return comics![index]
+        }
+    }
+        
+    
     private func loadResults(for type: FeedType) {
         switch type {
         case .all:
@@ -73,8 +86,39 @@ class FeedSectionProxy: ContentProxy {
                 .sorted(byKeyPath: "number", ascending: false)
             observeResults()
             
-        default:
-            break
+        case .search(let query):
+            if let queryNumber = Int(query), 0 ... 9999 ~= queryNumber {
+                ComicFetcher.getComic(number: queryNumber)
+                comics = try! Realm()
+                    .objects(XKCD.self)
+                    .filter("number == %@", queryNumber)
+                observeResults()
+            } else {
+                ComicFetcher.fetchSuggestions(for: query) { [weak self] suggestedNumbers in
+                    guard let welf = self, !suggestedNumbers.isEmpty else {
+                        return
+                    }
+                    
+                    welf.collectionView?.refreshControl?.beginRefreshing()
+                                    
+                    let dispatchGroup = DispatchGroup()
+                    suggestedNumbers.forEach { suggestedNumber in
+                        dispatchGroup.enter()
+                        ComicFetcher.getComic(number: suggestedNumber) { _ in
+                            dispatchGroup.leave()
+                        }
+                    }
+                    
+                    dispatchGroup.notify(queue: .main) {
+                        welf.searchResults = suggestedNumbers
+                        welf.comics = try! Realm()
+                            .objects(XKCD.self)
+                            .filter("number IN %@", suggestedNumbers)
+                        welf.collectionView?.reloadSections(IndexSet(integer: welf.contentSectionIndex))
+                        welf.collectionView?.refreshControl?.endRefreshing()
+                    }
+                }
+            }
         }
     }
     
@@ -105,14 +149,16 @@ class FeedSectionProxy: ContentProxy {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeue(FeedCell.self, for: indexPath)
         
-        cell.comic = comics![indexPath.item]
+        cell.comic = xkcd(at: indexPath.item)
         
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        if case .all = feedType, indexPath.item == comics!.count - 5 {
-            ComicFetcher.fetchMoreComics()
+        
+        let comic = xkcd(at: indexPath.item)
+        if case .all = feedType, comic.number - 1 > 0 {
+            ComicFetcher.getComic(number: comic.number - 1)
         }
     }
 
@@ -120,14 +166,14 @@ class FeedSectionProxy: ContentProxy {
     // MARK: Context menu
     
     func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
-        let xkcd = comics![indexPath.item]
+        let comic = xkcd(at: indexPath.item)
 
         let save = UIAction(
-            title: xkcd.isSaved ? NSLocalizedString("Unsave", comment: "") : NSLocalizedString("Save", comment: ""),
-            image: xkcd.isSaved ? UIImage(systemName: "heart.slash") : UIImage(systemName: "heart"))
+            title: comic.isSaved ? NSLocalizedString("Unsave", comment: "") : NSLocalizedString("Save", comment: ""),
+            image: comic.isSaved ? UIImage(systemName: "heart.slash") : UIImage(systemName: "heart"))
         { _ in
             try! Realm().write {
-                xkcd.isSaved = !xkcd.isSaved
+                comic.isSaved = !comic.isSaved
             }
         }
         
@@ -135,7 +181,7 @@ class FeedSectionProxy: ContentProxy {
             title: NSLocalizedString("Explain", comment: ""),
             image: UIImage(systemName: "questionmark.circle"))
         { _ in
-            let explanationUrl = URL(string: "https://www.explainxkcd.com/wiki/index.php/\(xkcd.number)")!
+            let explanationUrl = URL(string: "https://www.explainxkcd.com/wiki/index.php/\(comic.number)")!
             let viewController = SFSafariViewController(url: explanationUrl)
             viewController.preferredControlTintColor = .label
             
@@ -147,7 +193,7 @@ class FeedSectionProxy: ContentProxy {
             image: UIImage(systemName: "square.and.arrow.up"))
         { _ in
             let activityViewController = UIActivityViewController(
-                activityItems: [URL(string: "https://xkcd.com/\(xkcd.number)")!],
+                activityItems: [URL(string: "https://xkcd.com/\(comic.number)")!],
                 applicationActivities: nil
             )
             
@@ -180,20 +226,20 @@ class FeedSectionProxy: ContentProxy {
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let xkcd = comics![indexPath.item]
+        let comic = xkcd(at: indexPath.item)
                 
         let contentWidth = layoutWidth < 500 + .sidePadding * 2
             ? layoutWidth - .sidePadding * 2
             : 500.0
         
-        let imageHeight = contentWidth * CGFloat(xkcd.imageHeight / xkcd.imageWidth)
+        let imageHeight = contentWidth * CGFloat(comic.imageHeight / comic.imageWidth)
         
-        let titleHeight = xkcd.title.boundingRect(with: CGSize(width: contentWidth - 5.0, height: .greatestFiniteMagnitude),
+        let titleHeight = comic.title.boundingRect(with: CGSize(width: contentWidth - 5.0, height: .greatestFiniteMagnitude),
                                                   options: [.usesFontLeading, .usesLineFragmentOrigin],
                                                   attributes: [.font: UIFont.title],
                                                   context: nil).size.height
         
-        let captionHeight = xkcd.caption.boundingRect(with: CGSize(width: contentWidth - 5.0, height: .greatestFiniteMagnitude),
+        let captionHeight = comic.caption.boundingRect(with: CGSize(width: contentWidth - 5.0, height: .greatestFiniteMagnitude),
                                                       options: [.usesFontLeading, .usesLineFragmentOrigin],
                                                       attributes: [.font: UIFont.caption],
                                                       context: nil).size.height
