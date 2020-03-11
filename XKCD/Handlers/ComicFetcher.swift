@@ -103,7 +103,7 @@ struct ComicFetcher {
     }
     
     /// Searches for comic numbers that might be relevant
-    static func fetchSuggestions(for query: String, onCompletion: @escaping ([Int]) -> Void) {
+    static func getSuggestions(for query: String, onCompletion: @escaping ([Int]) -> Void) {
         let queryUrl = URL(string: "https://relevantxkcd.appspot.com/process?action=xkcd&query=\(query)")!
         URLSession.shared.dataTask(with: queryUrl) { (data, _, error) in
             guard let data = data, let result = String(data: data, encoding: .utf8) else {

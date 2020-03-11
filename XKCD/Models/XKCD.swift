@@ -13,7 +13,7 @@ import RealmSwift
 class XKCD: Object {
     
     // Realm doesn't provide normal inits, so empty placeholders guaranteed to be overwritten is easiest.
-    // Realm also requires all properties to be @objc dynamic
+
     dynamic var id = ""
     
     dynamic var number = 0 {
@@ -30,7 +30,6 @@ class XKCD: Object {
     dynamic var imageHeight = 0.0
     dynamic var imageWidth = 0.0
     
-    /// Flag indicating if the user has saved this comic
     dynamic var isSaved = false
     dynamic var savedAt = 0
     

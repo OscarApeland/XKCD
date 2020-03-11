@@ -57,14 +57,12 @@ class FeedSectionProxy: ContentProxy {
     // MARK: Feed loading
     
     private var comics: Results<XKCD>?
+    private var searchSortedResults: [XKCD] = []
     
-    private var searchResults = [Int]()
     
     private func xkcd(at index: Int) -> XKCD {
         if case .search = feedType {
-            return comics!.sorted {
-                searchResults.firstIndex(of: $0.number)! > searchResults.firstIndex(of: $1.number)!
-            }[index]
+            return searchSortedResults[index]
         } else {
             return comics![index]
         }
@@ -94,7 +92,7 @@ class FeedSectionProxy: ContentProxy {
                     .filter("number == %@", queryNumber)
                 observeResults()
             } else {
-                ComicFetcher.fetchSuggestions(for: query) { [weak self] suggestedNumbers in
+                ComicFetcher.getSuggestions(for: query) { [weak self] suggestedNumbers in
                     guard let welf = self, !suggestedNumbers.isEmpty else {
                         return
                     }
@@ -110,10 +108,12 @@ class FeedSectionProxy: ContentProxy {
                     }
                     
                     dispatchGroup.notify(queue: .main) {
-                        welf.searchResults = suggestedNumbers
                         welf.comics = try! Realm()
                             .objects(XKCD.self)
                             .filter("number IN %@", suggestedNumbers)
+                        welf.searchSortedResults = welf.comics!.sorted {
+                            suggestedNumbers.firstIndex(of: $0.number)! < suggestedNumbers.firstIndex(of: $1.number)!
+                        }
                         welf.collectionView?.reloadSections(IndexSet(integer: welf.contentSectionIndex))
                         welf.collectionView?.refreshControl?.endRefreshing()
                     }
