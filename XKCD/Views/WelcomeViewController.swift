@@ -79,19 +79,20 @@ class WelcomeViewController: UIViewController {
             (title: "Keep Your Favorites", detail: "Saved posts are easily accessible from the heart button."),
             (title: "Find That Relevant One", detail: "Search by any term or comic number to get your relevant XKCD."),
             (title: "Browse Anywhere", detail: "Every comic you see is saved offline for later viewing."),
+            (title: "On Anything", detail: "As many windows and sizes as you would like."),
             (title: "Completely Private", detail: "Zero tracking, analytics or cloud data."),
         ].forEach { text in
             let titleLabel = UILabel()
             titleLabel.text = text.title
             titleLabel.textColor = .label
             titleLabel.numberOfLines = 0
-            titleLabel.font = .systemFont(ofSize: 16.0, weight: .bold)
+            titleLabel.font = .title
             
             let detailLabel = UILabel()
             detailLabel.text = text.detail
             detailLabel.textColor = .label
             detailLabel.numberOfLines = 0
-            detailLabel.font = .systemFont(ofSize: 16.0, weight: .regular)
+            detailLabel.font = .caption
             
             stackView.addArrangedSubview(titleLabel)
             stackView.setCustomSpacing(.viewSpacing, after: titleLabel)
