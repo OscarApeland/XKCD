@@ -94,7 +94,7 @@ struct ComicFetcher {
                     return Calendar.current.date(from: components)!
                 }()
 
-                realm.add(xkcd)
+                realm.add(xkcd, update: .all)
             }
         }
     }
@@ -123,7 +123,7 @@ struct ComicFetcher {
             return
         }
         
-        let nextPageNumbers = Array(max(0, leastRecentComicNumber() - 15) ..< leastRecentComicNumber())
+        let nextPageNumbers = Array(max(0, leastRecentComicNumber() - 15) ... leastRecentComicNumber())
         fetchComics(numbers: nextPageNumbers, onCompletion: onCompletion)
     }
     

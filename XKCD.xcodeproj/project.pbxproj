@@ -18,7 +18,6 @@
 		08D80A4624172BA700AC896E /* ComicFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08D80A4524172BA700AC896E /* ComicFetcher.swift */; };
 		08D80A492417352F00AC896E /* ImageStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08D80A482417352F00AC896E /* ImageStorage.swift */; };
 		08D80A4B2417E61500AC896E /* ContentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08D80A4A2417E61500AC896E /* ContentViewController.swift */; };
-		08D80A4D2417E66A00AC896E /* ContentFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08D80A4C2417E66A00AC896E /* ContentFlowLayout.swift */; };
 		08D80A4F2417E69000AC896E /* ContentSectionProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08D80A4E2417E69000AC896E /* ContentSectionProtocol.swift */; };
 		08D80A522417E6C600AC896E /* Spacing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08D80A512417E6C600AC896E /* Spacing.swift */; };
 		08D80A562417E97600AC896E /* FeedSectionProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08D80A552417E97600AC896E /* FeedSectionProxy.swift */; };
@@ -40,7 +39,6 @@
 		08D80A4524172BA700AC896E /* ComicFetcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComicFetcher.swift; sourceTree = "<group>"; };
 		08D80A482417352F00AC896E /* ImageStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageStorage.swift; sourceTree = "<group>"; };
 		08D80A4A2417E61500AC896E /* ContentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentViewController.swift; sourceTree = "<group>"; };
-		08D80A4C2417E66A00AC896E /* ContentFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentFlowLayout.swift; sourceTree = "<group>"; };
 		08D80A4E2417E69000AC896E /* ContentSectionProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentSectionProtocol.swift; sourceTree = "<group>"; };
 		08D80A512417E6C600AC896E /* Spacing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Spacing.swift; sourceTree = "<group>"; };
 		08D80A552417E97600AC896E /* FeedSectionProxy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedSectionProxy.swift; sourceTree = "<group>"; };
@@ -161,7 +159,6 @@
 			isa = PBXGroup;
 			children = (
 				08D80A4A2417E61500AC896E /* ContentViewController.swift */,
-				08D80A4C2417E66A00AC896E /* ContentFlowLayout.swift */,
 				08D80A4E2417E69000AC896E /* ContentSectionProtocol.swift */,
 			);
 			path = Base;
@@ -258,7 +255,6 @@
 				08D80A492417352F00AC896E /* ImageStorage.swift in Sources */,
 				08D80A562417E97600AC896E /* FeedSectionProxy.swift in Sources */,
 				08D80A24241722B400AC896E /* AppDelegate.swift in Sources */,
-				08D80A4D2417E66A00AC896E /* ContentFlowLayout.swift in Sources */,
 				08D80A582417E9C600AC896E /* FeedCell.swift in Sources */,
 				08D80A5C2417EAFD00AC896E /* UICollectionView+RealmReloading.swift in Sources */,
 				08D80A26241722B400AC896E /* SceneDelegate.swift in Sources */,

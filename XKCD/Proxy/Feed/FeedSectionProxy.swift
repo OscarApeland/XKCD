@@ -71,6 +71,7 @@ class FeedSectionProxy: ContentProxy {
                 .objects(XKCD.self)
                 .filter("isSaved == true")
                 .sorted(byKeyPath: "number", ascending: false)
+            observeResults()
             
         default:
             break
@@ -166,8 +167,12 @@ class FeedSectionProxy: ContentProxy {
         return .sectionSpacing
     }
     
+    var layoutWidth: CGFloat {
+        collectionView!.frame.width
+    }
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        let margin = collectionView.bounds.width < 500
+        let margin = layoutWidth < 500 + .sidePadding * 2
             ? .sidePadding
             : (collectionView.bounds.width - 500) / 2
 
@@ -176,8 +181,11 @@ class FeedSectionProxy: ContentProxy {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let xkcd = comics![indexPath.item]
+                
+        let contentWidth = layoutWidth < 500 + .sidePadding * 2
+            ? layoutWidth - .sidePadding * 2
+            : 500.0
         
-        let contentWidth = min(500.0, collectionView.bounds.width - .sidePadding * 2)
         let imageHeight = contentWidth * CGFloat(xkcd.imageHeight / xkcd.imageWidth)
         
         let titleHeight = xkcd.title.boundingRect(with: CGSize(width: contentWidth - 5.0, height: .greatestFiniteMagnitude),

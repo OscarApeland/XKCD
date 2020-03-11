@@ -8,7 +8,6 @@
 
 import UIKit
 
-
 /// UICollectionViewController replica that delegates all source calls to the appropriate section
 class ContentViewController: UIViewController {
     
@@ -22,10 +21,8 @@ class ContentViewController: UIViewController {
     
     
     // MARK: Outlets
-    
-    lazy var layout = ContentFlowLayout()
-    
-    lazy var collectionView = UICollectionView(frame: UIScreen.main.bounds, collectionViewLayout: layout)
+        
+    lazy var collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: UICollectionViewFlowLayout())
     
     
     // MARK: Lifecycle
@@ -49,17 +46,17 @@ class ContentViewController: UIViewController {
     
     // MARK: Cell Resizing
     
-    private lazy var currentSize = view.bounds.size
+    private lazy var currentBounds = view.bounds
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
-        guard view.bounds.size != currentSize else {
+        guard view.bounds != currentBounds else {
             return
         }
         
-        currentSize = view.bounds.size
-        collectionView.setCollectionViewLayout(ContentFlowLayout(), animated: true)
+        currentBounds = view.bounds
+        collectionView.collectionViewLayout.invalidateLayout()
     }
     
     
