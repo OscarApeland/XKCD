@@ -32,6 +32,7 @@ class XKCD: Object {
     
     /// Flag indicating if the user has saved this comic
     dynamic var isSaved = false
+    dynamic var savedAt = 0
     
     override class func primaryKey() -> String? {
         return "id"

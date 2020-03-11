@@ -83,7 +83,7 @@ class FeedSectionProxy: ContentProxy {
             comics = try! Realm()
                 .objects(XKCD.self)
                 .filter("isSaved == true")
-                .sorted(byKeyPath: "number", ascending: false)
+                .sorted(byKeyPath: "savedAt", ascending: false)
             observeResults()
             
         case .search(let query):
@@ -173,6 +173,7 @@ class FeedSectionProxy: ContentProxy {
             image: comic.isSaved ? UIImage(systemName: "heart.slash") : UIImage(systemName: "heart"))
         { _ in
             try! Realm().write {
+                comic.savedAt = Int(Date().timeIntervalSince1970)
                 comic.isSaved = !comic.isSaved
             }
         }
@@ -248,7 +249,7 @@ class FeedSectionProxy: ContentProxy {
             + imageHeight + .itemSpacing
             + titleHeight + .viewSpacing
             + captionHeight + .viewSpacing
-            + UIFont.date.labelHeight
+            + UIFont.date.lineHeight.rounded(.up)
     
         return CGSize(width: contentWidth, height: totalHeight)
     }
