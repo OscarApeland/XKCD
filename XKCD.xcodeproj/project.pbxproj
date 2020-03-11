@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0881E3BD2418A5F800EF7B45 /* WelcomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0881E3BC2418A5F800EF7B45 /* WelcomeViewController.swift */; };
 		08D80A24241722B400AC896E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08D80A23241722B400AC896E /* AppDelegate.swift */; };
 		08D80A26241722B400AC896E /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08D80A25241722B400AC896E /* SceneDelegate.swift */; };
 		08D80A28241722B400AC896E /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08D80A27241722B400AC896E /* MainViewController.swift */; };
@@ -28,6 +29,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0881E3BC2418A5F800EF7B45 /* WelcomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeViewController.swift; sourceTree = "<group>"; };
 		08D80A20241722B400AC896E /* XKCD.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = XKCD.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		08D80A23241722B400AC896E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		08D80A25241722B400AC896E /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -121,6 +123,7 @@
 			isa = PBXGroup;
 			children = (
 				08D80A27241722B400AC896E /* MainViewController.swift */,
+				0881E3BC2418A5F800EF7B45 /* WelcomeViewController.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -256,6 +259,7 @@
 				08D80A562417E97600AC896E /* FeedSectionProxy.swift in Sources */,
 				08D80A24241722B400AC896E /* AppDelegate.swift in Sources */,
 				08D80A582417E9C600AC896E /* FeedCell.swift in Sources */,
+				0881E3BD2418A5F800EF7B45 /* WelcomeViewController.swift in Sources */,
 				08D80A5C2417EAFD00AC896E /* UICollectionView+RealmReloading.swift in Sources */,
 				08D80A26241722B400AC896E /* SceneDelegate.swift in Sources */,
 				08D80A4B2417E61500AC896E /* ContentViewController.swift in Sources */,

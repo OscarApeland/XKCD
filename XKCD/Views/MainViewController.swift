@@ -69,6 +69,10 @@ class MainViewController: ContentViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+     
+        if !WelcomeViewController.hasSeenWelcome {
+            present(WelcomeViewController(), animated: false)
+        }
         
         refreshControl.beginRefreshing()
         ComicFetcher.getLatestComics {
@@ -101,8 +105,6 @@ class MainViewController: ContentViewController {
 extension MainViewController: UISearchResultsUpdating, UISearchControllerDelegate {
     
     func updateSearchResults(for searchController: UISearchController) {
-        print("update")
-        
         if searchController.searchBar.text!.isEmpty {
             if case .search = (proxies.first as? FeedSectionProxy)?.feedType {
                 proxies = [
@@ -117,7 +119,6 @@ extension MainViewController: UISearchResultsUpdating, UISearchControllerDelegat
         let currentQuery = searchController.searchBar.text!
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             guard currentQuery == searchController.searchBar.text else {
-                print("Bounced", currentQuery)
                 return
             }
             
@@ -130,7 +131,6 @@ extension MainViewController: UISearchResultsUpdating, UISearchControllerDelegat
     }
     
     func willDismissSearchController(_ searchController: UISearchController) {
-        print("dismisss")
         proxies = [
             FeedSectionProxy(feedType: isSavedSelected ? .saved : .all)
         ]
