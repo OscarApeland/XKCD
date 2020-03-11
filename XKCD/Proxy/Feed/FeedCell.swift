@@ -21,7 +21,10 @@ class FeedCell: UICollectionViewCell {
             imageView.image = ImageStorage.getImage(forComic: comic.number)
             titleLabel.text = comic.title
             captionLabel.text = comic.caption
-            dateLabel.text = RelativeDateTimeFormatter().localizedString(for: comic.date, relativeTo: Date())
+            
+            dateLabel.text = Date().timeIntervalSince(comic.date) > 60 * 60 * 24 * 7
+                ? DateFormatter.localizedString(from: comic.date, dateStyle: .medium, timeStyle: .none)
+                : RelativeDateTimeFormatter().localizedString(for: comic.date, relativeTo: Date())
         }
     }
     

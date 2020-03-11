@@ -30,6 +30,12 @@ class MainNavigationController: UINavigationController {
 
 class MainViewController: ContentViewController {
 
+    
+    // MARK: State
+    
+    var isShowingSaved = false
+    
+    
     // MARK: Accessories
     
     lazy var searchController = UISearchController(searchResultsController: nil)
@@ -44,6 +50,7 @@ class MainViewController: ContentViewController {
         
         navigationItem.searchController = searchController
         navigationItem.hidesSearchBarWhenScrolling = false
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "heart"), style: .plain, target: self, action: #selector(savedButtonPressed))
         
         searchController.searchBar.placeholder = "Find XKCD"
         searchController.delegate = self
@@ -56,7 +63,7 @@ class MainViewController: ContentViewController {
         collectionView.refreshControl = refreshControl
         
         proxies = [
-            FeedSectionProxy()
+            FeedSectionProxy(feedType: .all)
         ]
     }
     
@@ -76,6 +83,18 @@ class MainViewController: ContentViewController {
         ComicFetcher.refreshComics {
             self.refreshControl.endRefreshing()
         }
+    }
+    
+    @objc private func savedButtonPressed(_ sender: UIBarButtonItem) {
+        UISelectionFeedbackGenerator().selectionChanged()
+        
+        isShowingSaved = !isShowingSaved
+        sender.image = isShowingSaved ? UIImage(systemName: "heart.fill") : UIImage(systemName: "heart")
+        
+        proxies = [
+            FeedSectionProxy(feedType: isShowingSaved ? .saved : .all)
+        ]
+        collectionView.reloadSections(IndexSet(integer: 0))
     }
 }
 
